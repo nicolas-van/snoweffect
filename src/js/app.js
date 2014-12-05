@@ -2,25 +2,29 @@
 (function() {
 "use strict";
 
-    var width = 640;
-    var height = 360;
-    var aspectRatio = width/height;
+    var width;
+    var height;
+    var aspectRatio;
 
     var scene = new THREE.Scene();
-    var camera = new THREE.OrthographicCamera(0, width, height, 0, 0, 1);
-
-    function fit(width, height, aspectRatio) {
-        var a = [width, width / aspectRatio];
-        var b = [height * aspectRatio, height];
-        return a[0] < b[0] ? a : b;
-    }
-
+    var camera = new THREE.OrthographicCamera(0, 1, 1, 0, 0, 1);
     var renderer = new THREE.CanvasRenderer({ alpha: true });
-    //renderer.setClearColor(
-    renderer.setSize.apply(renderer, fit(window.innerWidth, window.innerHeight, aspectRatio));
-    $(renderer.domElement).css("margin-right", "auto");
-    $(renderer.domElement).css("margin-left", "auto");
+
+    var setSizes = function() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        aspectRatio = width/height;
+        camera.right = width;
+        camera.top = height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+    };
+
+    $(window).resize(setSizes);
+    setSizes();
+
     $(renderer.domElement).css("display", "block");
+    $(renderer.domElement).css("position", "fixed");
     document.body.appendChild(renderer.domElement);
 
     function buildPlane() {
@@ -29,9 +33,9 @@
         var map = THREE.ImageUtils.loadTexture("ParticleSmoke.png");
         var material = new THREE.MeshBasicMaterial( { map: map, transparent: true} );
         var plane = new THREE.Mesh(geometry, material);
-        plane.position.set(50 + (Math.random() * 400), 50 + (Math.random() * 100), 0);
-        plane.speed = [(Math.random() * 2 > 1 ? 1 : -1) * (10 + (Math.random() * 50)),
-            (Math.random() * 2 > 1 ? 1 : -1) * (10 + (Math.random() * 50))];
+        plane.position.set(size + (Math.random() * width * 2), height + size + (Math.random() * height), 0);
+        plane.speed = [-1 * (10 + (Math.random() * 50)),
+            -1 * (10 + (Math.random() * 50))];
         scene.add(plane);
         return plane;
     }
@@ -45,7 +49,7 @@
         var deltat = (current - last) / 1000;
         deltat = deltat > 0.1 ? 0.1 : deltat;
 
-        _.each(planes, function(plane) {
+        _.each(_.clone(planes), function(plane) {
 
             var speed = plane.speed;
 
@@ -53,21 +57,10 @@
             var h = plane.geometry.parameters.height;
 
             plane.position.x += speed[0] * deltat;
-            if (plane.position.x - (w / 2) < 0) {
-                plane.position.x = w / 2;
-                speed[0] = - speed[0];
-            } else if (plane.position.x + (w / 2) > width) {
-                plane.position.x = width - w / 2;
-                speed[0] = - speed[0];
-            }
-
             plane.position.y += speed[1] * deltat;
-            if (plane.position.y - (h / 2) < 0) {
-                plane.position.y = (h / 2);
-                speed[1] = - speed[1];
-            } else if (plane.position.y + (h / 2) > height) {
-                plane.position.y = height - (h / 2);
-                speed[1] = - speed[1];
+            if (plane.position.x + w < 0) {
+                planes = _.without(planes, plane);
+                planes.push(buildPlane());
             }
         });
 
