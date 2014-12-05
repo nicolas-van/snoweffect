@@ -15,7 +15,8 @@
         return a[0] < b[0] ? a : b;
     }
 
-    var renderer = new THREE.CanvasRenderer();
+    var renderer = new THREE.CanvasRenderer({ alpha: true });
+    //renderer.setClearColor(
     renderer.setSize.apply(renderer, fit(window.innerWidth, window.innerHeight, aspectRatio));
     $(renderer.domElement).css("margin-right", "auto");
     $(renderer.domElement).css("margin-left", "auto");
@@ -23,8 +24,10 @@
     document.body.appendChild(renderer.domElement);
 
     function buildPlane() {
-        var geometry = new THREE.CircleGeometry(10, 100);
-        var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+        var size = 10 + (Math.random() * 25);
+        var geometry = new THREE.PlaneGeometry(size, size);
+        var map = THREE.ImageUtils.loadTexture("ParticleSmoke.png");
+        var material = new THREE.MeshBasicMaterial( { map: map, transparent: true} );
         var plane = new THREE.Mesh(geometry, material);
         plane.position.set(50 + (Math.random() * 400), 50 + (Math.random() * 100), 0);
         plane.speed = [(Math.random() * 2 > 1 ? 1 : -1) * (10 + (Math.random() * 50)),
@@ -32,7 +35,7 @@
         scene.add(plane);
         return plane;
     }
-    var planes = _.map(_.range(50), function() {return buildPlane()});
+    var planes = _.map(_.range(200), function() {return buildPlane()});
 
     //camera.position.z = 5;
     var last = new Date().getTime();
@@ -46,8 +49,8 @@
 
             var speed = plane.speed;
 
-            var w = plane.geometry.parameters.radius * 2;
-            var h = plane.geometry.parameters.radius * 2;
+            var w = plane.geometry.parameters.width;
+            var h = plane.geometry.parameters.height;
 
             plane.position.x += speed[0] * deltat;
             if (plane.position.x - (w / 2) < 0) {
