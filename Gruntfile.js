@@ -11,18 +11,9 @@ module.exports = function(grunt) {
     var libjsfiles = [
         "bower_components/underscore/underscore.js",
         "bower_components/jquery/dist/jquery.js",
-        "bower_components/uri.js/src/URI.js",
-        "bower_components/momentjs/moment.js",
-        "bower_components/httpinvoke/httpinvoke-browser.js",
-        "bower_components/bluebird/js/browser/bluebird.js",
-        "bower_components/ring/ring.js",
-        "bower_components/spear/spear.js",
-        "bower_components/bootstrap/dist/js/bootstrap.js",
-        "bower_components/sjoh/sjoh.js",
         "bower_components/threejs/build/three.js",
     ];
     var templatesfiles = [
-        "src/client_templates/templates.html",
     ];
     var templatesjsfiles = _.map(templatesfiles, function(e) { return e.replace(".html", ".js") });
     var myjsfiles = [
@@ -33,7 +24,6 @@ module.exports = function(grunt) {
     var libcssfiles = [
     ];
     var lessfiles = [
-        "src/css/style.less",
     ];
     var mycssfiles = _.map(lessfiles, function(e) { return e.replace(".less", ".css") });
     var cssfiles = [].concat(libcssfiles).concat(mycssfiles);

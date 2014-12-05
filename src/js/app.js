@@ -1,5 +1,5 @@
 
-(function() {
+$(function() {
 "use strict";
 
     var width;
@@ -25,7 +25,9 @@
 
     $(renderer.domElement).css("display", "block");
     $(renderer.domElement).css("position", "fixed");
-    document.body.appendChild(renderer.domElement);
+    $(renderer.domElement).css("margin", "0");
+    $(renderer.domElement).css("padding", "0");
+    $("body").append($(renderer.domElement));
 
     function buildPlane() {
         var size = 10 + (Math.random() * 25);
