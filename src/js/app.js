@@ -27,6 +27,9 @@ $(function() {
     $(renderer.domElement).css("position", "fixed");
     $(renderer.domElement).css("margin", "0");
     $(renderer.domElement).css("padding", "0");
+    $(renderer.domElement).css("left", "0");
+    $(renderer.domElement).css("top", "0");
+    $(renderer.domElement).css("pointer-events", "none");
     $("body").append($(renderer.domElement));
 
     function buildPlane() {
