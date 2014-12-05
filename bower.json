@@ -1,0 +1,25 @@
+{
+  "name": "thisproject",
+  "version": "0.0.1",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "jquery": "~1.11.0",
+    "ring": "~2.0.0",
+    "spear": "~0.3.0",
+    "momentjs": "~2.5.1",
+    "uri.js": "~1.12.0",
+    "respond": "~1.4.2",
+    "html5shiv": "~3.7.0",
+    "sjoh": "~1.0.4",
+    "underscore": "~1.7.0",
+    "threejs": "r68"
+  },
+  "devDependencies": {
+    "headjs": "~1.0.3"
+  }
+}
