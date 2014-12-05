@@ -39,8 +39,8 @@ $(function() {
         var material = new THREE.MeshBasicMaterial( { map: map, transparent: true} );
         var plane = new THREE.Mesh(geometry, material);
         plane.position.set(size + (Math.random() * width * 2), height + size + (Math.random() * height), 0);
-        plane.speed = [-1 * (10 + (Math.random() * 50)),
-            -1 * (10 + (Math.random() * 50))];
+        plane.speed = [-1 * (20 + (Math.random() * 30)),
+            -1 * (30 + (Math.random() * 30))];
         scene.add(plane);
         return plane;
     }
