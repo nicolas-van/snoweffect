@@ -2,4 +2,4 @@ node_modules/
 bower_components/
 filesconfig.json
 src/css/*.css
-.static
+static

@@ -36,10 +36,32 @@ $(function() {
     $(renderer.domElement).css("pointer-events", "none");
     $("body").append($(renderer.domElement));
 
+    var image = document.createElement("canvas");
+    image.width = 64;
+    image.height = 64;
+
+    (function() {
+        var context = image.getContext('2d');
+        var centerX = image.width / 2;
+        var centerY = image.height / 2;
+        var radius = image.width / 2;
+
+        var iterations = 100;
+
+        _.each(_.range(iterations), function(el) {
+            el = el + 1;
+            context.beginPath();
+            context.arc(centerX, centerY, radius * (1 - (el / iterations)), 0, 2 * Math.PI, false);
+            context.fillStyle = 'rgba(255, 255, 255, ' + ((el / iterations) * 0.05) + ')';
+            context.fill();
+        });
+    })();
+
     function buildPlane() {
         var size = 10 + (Math.random() * 25);
         var geometry = new THREE.PlaneGeometry(size, size);
-        var map = THREE.ImageUtils.loadTexture("ParticleSmoke.png");
+        var map = new THREE.Texture(image);
+        map.needsUpdate = true;
         var material = new THREE.MeshBasicMaterial( { map: map, transparent: true} );
         var plane = new THREE.Mesh(geometry, material);
         plane.position.set(-(width / 2) + (Math.random() * width * 2), height + size + (Math.random() * height), 0);
